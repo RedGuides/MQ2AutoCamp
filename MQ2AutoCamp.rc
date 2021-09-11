@@ -51,8 +51,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0
- PRODUCTVERSION 0,0
+ FILEVERSION 1,03
+ PRODUCTVERSION 1,03
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -73,11 +73,11 @@ BEGIN
 #else
             VALUE "FileDescription", "MQ2AutoCamp Release Version"
 #endif
-            VALUE "FileVersion", "0.0"
+            VALUE "FileVersion", "1.03"
             VALUE "InternalName", "MQ2AutoCamp.dll"
             VALUE "OriginalFilename", "MQ2AutoCamp.dll"
             VALUE "ProductName", "MQ2AutoCamp"
-            VALUE "ProductVersion", "0.0"
+            VALUE "ProductVersion", "1.03"
         END
     END
     BLOCK "VarFileInfo"

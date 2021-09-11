@@ -30,15 +30,8 @@ time_t StartTime;
 time_t WarningTime;
 time_t ResetTime;
 
-void Update_INIFileName()
-{
-	//sprintf_s(INIFileName,"%s\\%s_%s.ini",gszINIPath, EQADDR_SERVERNAME, GetCharInfo()->Name);
-	sprintf_s(INIFileName,"%s\\MQ2AutoCamp.ini", gPathConfig);
-}
-
 void SaveINI()
 {
-	Update_INIFileName();
 	// write on/off settings
 	char ToStr[16];
 	sprintf_s(szTemp,"%s_Settings",GetCharInfo()->Name);
@@ -56,7 +49,6 @@ void SaveINI()
 
 void LoadINI()
 {
-	Update_INIFileName();
 	// get on/off settings
 	sprintf_s(szTemp,"%s_Settings",GetCharInfo()->Name);
 	bAutoCampEnabled = GetPrivateProfileInt(szTemp, "Enabled", 0, INIFileName) > 0 ? true : false;
@@ -204,14 +196,14 @@ void AutoCampCommand(PSPAWNINFO pChar, PCHAR zLine)
 }
 
 // Called once, when the plugin is to initialize
-PLUGIN_API VOID InitializePlugin(VOID)
+PLUGIN_API void InitializePlugin()
 {
 	DebugSpewAlways("Initializing MQ2AutoCamp");
 	AddCommand("/autocamp",AutoCampCommand);
 }
 
 // Called once, when the plugin is to shutdown
-PLUGIN_API VOID ShutdownPlugin(VOID)
+PLUGIN_API void ShutdownPlugin()
 {
 	DebugSpewAlways("Shutting down MQ2AutoCamp");
 	RemoveCommand("/autocamp");
@@ -219,7 +211,7 @@ PLUGIN_API VOID ShutdownPlugin(VOID)
 
 
 // Called once directly after initialization, and then every time the gamestate changes
-PLUGIN_API VOID SetGameState(DWORD GameState)
+PLUGIN_API void SetGameState(int GameState)
 {
 	DebugSpewAlways("MQ2AutoCamp::SetGameState()");
 	if(GameState==GAMESTATE_INGAME) {
@@ -234,12 +226,11 @@ PLUGIN_API VOID SetGameState(DWORD GameState)
 
 void PopUpWarning(PCHAR szText)
 {
-	// show popup in                red                 for 30 seconds
-	((CTextOverlay*)pTextOverlay)->DisplayText(szText,13,10,255,100,500,30000);
+	pTextOverlay->DisplayText(szText,13,10,255,100,500,30000);
 }
 
 // This is called every time MQ pulses
-PLUGIN_API VOID OnPulse(VOID)
+PLUGIN_API void OnPulse()
 {
 	if (GetGameState() != GAMESTATE_INGAME || !bAutoCampEnabled) return;
 	SkipPulse++;
@@ -301,11 +292,11 @@ PLUGIN_API VOID OnPulse(VOID)
 }
 
 
-PLUGIN_API VOID OnEndZone(VOID) {
+PLUGIN_API void OnEndZone() {
 	// if we zone assume manual control or rez and abort auto camping
 	if (bCamp) {
 		bCamp = false;
 		WriteChatf("MQ2AutoCamp :: Camp to desktop \arABORTED\ax because of zoning");
-		ResetTime = time(NULL);
+		ResetTime = time(nullptr);
 	}
 }
